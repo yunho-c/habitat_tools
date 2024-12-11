@@ -1,11 +1,48 @@
 import numpy as np
 
-MP3D_CATEGORIES = ['void', 'wall', 'floor', 'chair', 'door', 'table', 'picture', 'cabinet', 'cushion',
-                   'window', 'sofa', 'bed', 'curtain', 'chest_of_drawers', 'plant', 'sink', 'stairs',
-                   'ceiling', 'toilet', 'stool', 'towel', 'mirror', 'tv_monitor', 'shower', 'column',
-                   'bathtub', 'counter', 'fireplace', 'lighting', 'beam', 'railing', 'shelving',
-                   'blinds', 'gym_equipment', 'seating', 'board_panel', 'furniture', 'appliances',
-                   'clothes', 'objects', 'misc']
+MP3D_CATEGORIES = [
+    "void",
+    "wall",
+    "floor",
+    "chair",
+    "door",
+    "table",
+    "picture",
+    "cabinet",
+    "cushion",
+    "window",
+    "sofa",
+    "bed",
+    "curtain",
+    "chest_of_drawers",
+    "plant",
+    "sink",
+    "stairs",
+    "ceiling",
+    "toilet",
+    "stool",
+    "towel",
+    "mirror",
+    "tv_monitor",
+    "shower",
+    "column",
+    "bathtub",
+    "counter",
+    "fireplace",
+    "lighting",
+    "beam",
+    "railing",
+    "shelving",
+    "blinds",
+    "gym_equipment",
+    "seating",
+    "board_panel",
+    "furniture",
+    "appliances",
+    "clothes",
+    "objects",
+    "misc",
+]
 
 d3_41_colors_rgb: np.ndarray = np.array(
     [
@@ -50,7 +87,7 @@ d3_41_colors_rgb: np.ndarray = np.array(
         [165, 81, 148],
         [206, 109, 189],
         [222, 158, 214],
-        [255, 255, 255]
+        [255, 255, 255],
     ],
     dtype=np.uint8,
 )
