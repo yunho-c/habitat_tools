@@ -11,7 +11,7 @@ from build_occ_map_large_scale import build_occ_map
 
 
 def build_env(split, scene_with_index, device_id=0):
-    # ================================ load habitat env============================================
+    # === load habitat env ===
     print(f"scene_with_index = {scene_with_index}")
     config = habitat.get_config(config_paths=cfg.GENERAL.BUILD_MAP_CONFIG_PATH)
     config.defrost()
@@ -29,10 +29,10 @@ def build_env(split, scene_with_index, device_id=0):
 
 
 def build_floor(split, scene_with_index, output_folder, scene_floor_dict):
-    # ============================ get a gpu
+    # === get a gpu ===
     device_id = gpu_Q.get()
 
-    # ================ initialize habitat env =================
+    # === initialize habitat env ===
     env = build_env(split, scene_with_index, device_id=device_id)
     env.reset()
 
@@ -49,7 +49,7 @@ def build_floor(split, scene_with_index, output_folder, scene_floor_dict):
 
     env.close()
 
-    # ================================ release the gpu============================
+    # === release the gpu ===
     gpu_Q.put(device_id)
 
 
@@ -66,7 +66,7 @@ def main():
     cfg.merge_from_file(f"configs/generate_maps.yaml")
     cfg.freeze()
 
-    # ====================== get the available GPU devices ============================
+    # === get the available GPU devices ===
     visible_devices = os.environ["CUDA_VISIBLE_DEVICES"].split(",")
     devices = [int(dev) for dev in visible_devices]
 
@@ -74,7 +74,7 @@ def main():
         for _ in range(cfg.SLURM.PROC_PER_GPU):
             gpu_Q.put(device_id)
 
-    # =============================== basic setup =======================================
+    # === basic setup ===
     split = args.split
     scene_floor_dict = np.load(
         f"{cfg.GENERAL.SCENE_HEIGHTS_DICT_PATH}/{split}_scene_floor_dict.npy",

@@ -17,13 +17,13 @@ semantic_map_folder = "output/semantic_map"
 theta_lst = [0]
 cell_size = cfg.SEM_MAP.CELL_SIZE
 
-# ============================= initialize a grid =========================================
+# === initialize a grid ===
 x = np.arange(-cfg.SEM_MAP.WORLD_SIZE, cfg.SEM_MAP.WORLD_SIZE, cell_size)
 z = np.arange(-cfg.SEM_MAP.WORLD_SIZE, cfg.SEM_MAP.WORLD_SIZE, cell_size)
 xv, zv = np.meshgrid(x, z)
 grid_H, grid_W = zv.shape
 
-# =============================== initialize the habitat environment ============================
+# === initialize the habitat environment ===
 config = habitat.get_config(config_paths="configs/habitat_env/build_map_mp3d.yaml")
 config.defrost()
 config.SIMULATOR.SCENE = f"data/scene_datasets/mp3d/{scene}/{scene}.glb"
@@ -44,7 +44,7 @@ map_data = read_sem_map_npy(sem_map_npy)
 # initialize the occupancy grid
 occ_map = np.zeros((grid_H, grid_W), dtype=int)
 
-# ============================= traverse the environment =========================================
+# === traverse the environment ===
 count_ = 0
 
 for grid_z in range(grid_H):

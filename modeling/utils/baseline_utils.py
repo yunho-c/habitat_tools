@@ -172,7 +172,7 @@ def convert_insseg_to_sseg(insseg, ins2cat_dict):
     return sseg
 
 
-# if # of classes is <= 41, flag_small_categories is True
+# if the number of classes is <= 41, flag_small_categories is True
 def apply_color_to_map(semantic_map, dataset="MP3D"):
     """convert semantic map semantic_map into a colorful visualization color_semantic_map"""
     assert len(semantic_map.shape) == 2

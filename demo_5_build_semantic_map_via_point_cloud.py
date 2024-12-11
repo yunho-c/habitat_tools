@@ -38,7 +38,7 @@ def build_semantic_map_via_point_cloud(x, y, z, label_seq, height):
     xyz_points = np.vstack((x, z, y))
     sseg_points = label_seq.squeeze().astype(int)
 
-    # ================= slice the point cloud ====================
+    # === slice the point cloud ===
     mask_y = np.logical_or(
         xyz_points[1, :] > height - 0.2, xyz_points[1, :] < height + 2.0
     )
@@ -100,7 +100,7 @@ with np.load(f"{data_folder}/{scene_name}_pcloud.npz") as data:
     z = data["z"]
     label_seq = data["label_seq"]
 
-# ================= load the episodes ================
+# === load the episodes ===
 split = "val_seen"  # 'train'
 jsonfilename = f"data/datasets/vln_r2r_mp3d_v1/{split}/{split}.json.gz"
 with gzip.open(jsonfilename, "r") as fin:
@@ -110,14 +110,14 @@ episodes = data["episodes"]
 id_epi = 226  # 183
 episode = episodes[id_epi]
 
-# ================== build the map ======================
+# === build the map ===
 height = episode["start_position"][1]  # 3.514  #
 
 semantic_map, map_data = build_semantic_map_via_point_cloud(x, y, z, label_seq, height)
 
 color_semantic_map = apply_color_to_map(semantic_map)
 
-# ============================= visualize the path
+# === visualize the path ===
 path = episode["reference_path"]
 
 x, y = [], []

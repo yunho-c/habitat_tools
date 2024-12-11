@@ -13,7 +13,7 @@ def build_occ_map(env, saved_folder, height, scene_name, split):
     # after testing, using 8 angles is most efficient
     cell_size = cfg.SEM_MAP.CELL_SIZE
 
-    # ============================= build a grid =========================================
+    # === build a grid ===
     x = np.arange(-cfg.SEM_MAP.WORLD_SIZE, cfg.SEM_MAP.WORLD_SIZE, cell_size)
     z = np.arange(-cfg.SEM_MAP.WORLD_SIZE, cfg.SEM_MAP.WORLD_SIZE, cell_size)
     xv, zv = np.meshgrid(x, z)
@@ -27,7 +27,7 @@ def build_occ_map(env, saved_folder, height, scene_name, split):
 
     occ_map = np.zeros((grid_H, grid_W), dtype=int)
 
-    # ========================= generate observations ===========================
+    # === generate observations ===
     for grid_z in range(grid_H):
         for grid_x in range(grid_W):
             x = xv[grid_z, grid_x] + cell_size / 2.0

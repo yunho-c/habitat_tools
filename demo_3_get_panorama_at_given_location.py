@@ -27,7 +27,7 @@ map_data = read_occ_map_npy(occ_map_npy)
 
 occ_map = map_data["occupancy_map"]
 
-# =============================== initialize the habitat environment ============================
+# === initialize the habitat environment ===
 config = habitat.get_config(config_paths="configs/habitat_env/build_map_mp3d.yaml")
 config.defrost()
 config.SIMULATOR.SCENE = f"data/scene_datasets/mp3d/{scene}/{scene}.glb"
@@ -52,7 +52,7 @@ coords = (90, 45, pi)
 pose = coords_to_pose(coords, map_data)
 X, Z, yaw = pose
 
-# ==================== render the view at various heading angle ================
+# === render the view at various heading angle ===
 obs_list = []
 for rot in [0, 90, 180, 270]:
     heading_angle = rot / 180 * np.pi
@@ -66,7 +66,7 @@ for rot in [0, 90, 180, 270]:
     )
     obs_list.append(obs)
 
-# ======================= stitch the views to form a panorama
+# === stitch the views to form a panorama ===
 rgb_lst, depth_lst, sseg_lst = [], [], []
 
 for idx, obs in enumerate(obs_list):

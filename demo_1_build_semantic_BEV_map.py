@@ -31,7 +31,7 @@ theta_lst = [
     pi * 7.0 / 4,
 ]
 
-# ============================= initialize a grid =========================================
+# === initialize a grid ===
 x = np.arange(-cfg.SEM_MAP.WORLD_SIZE, cfg.SEM_MAP.WORLD_SIZE, 0.3)
 z = np.arange(-cfg.SEM_MAP.WORLD_SIZE, cfg.SEM_MAP.WORLD_SIZE, 0.3)
 xv, zv = np.meshgrid(x, z)
@@ -39,7 +39,7 @@ grid_H, grid_W = zv.shape
 
 print(f"build a semantic map on scene = {scene}")
 
-# =============================== initialize the habitat environment ============================
+# === initialize the habitat environment ===
 config = habitat.get_config(config_paths="configs/habitat_env/build_map_mp3d.yaml")
 config.defrost()
 config.SIMULATOR.SCENE = f"data/scene_datasets/mp3d/{scene}/{scene}.glb"
@@ -51,17 +51,17 @@ config.freeze()
 env = habitat.sims.make_sim(config.SIMULATOR.TYPE, config=config.SIMULATOR)
 env.reset()
 
-# ============================ get scene ins to cat dict =================================
+# === get scene ins to cat dict ===
 scene_semantics = env.semantic_annotations()
 ins2cat_dict = {
     int(obj.id.split("_")[-1]): obj.category.index() for obj in scene_semantics.objects
 }
 
-# ================================ Building a map ===============================
+# === Building a map ===
 sem_map = semantic_map(saved_folder)
 
 count_ = 0
-# ========================= generate observations ===========================
+# === generate observations ===
 for grid_z in range(grid_H):
     for grid_x in range(grid_W):
         x = xv[grid_z, grid_x]
@@ -72,7 +72,7 @@ for grid_z in range(grid_H):
         flag_nav = env.is_navigable(agent_pos)
 
         if flag_nav:
-            # ==================== traverse theta ======================
+            # === traverse theta ===
             for idx_theta, theta in enumerate(theta_lst):
                 agent_rot = habitat_sim.utils.common.quat_from_angle_axis(
                     theta, habitat_sim.geo.GRAVITY
@@ -86,7 +86,7 @@ for grid_z in range(grid_H):
                 # convert instance segmentation to semantic segmentation
                 sseg_img = convert_insseg_to_sseg(insseg_img, ins2cat_dict)
 
-                # =============================== get agent global pose on habitat env ========================#
+                # === get agent global pose on habitat env ===
                 agent_pos = env.get_agent_state().position
                 agent_rot = env.get_agent_state().rotation
                 heading_vector = quaternion_rotate_vector(

@@ -38,7 +38,7 @@ GAP_ANGLE = np.pi / 6.
 scene_name = '8WUmhLawc2A'
 semantic_map_folder = f'output/semantic_map/{scene_name}'
 
-# ======================================== load the semantic map =======================================
+# === load the semantic map ===
 sem_map_npy = np.load(f'{semantic_map_folder}/BEV_semantic_map.npy', allow_pickle=True).item()
 sem_map_data = read_sem_map_npy(sem_map_npy)
 sem_map = sem_map_data['semantic_map']
@@ -52,7 +52,7 @@ H, W = sem_map.shape
 semantic_occupancy_map = cv2.resize(
     sem_map, (int(W * ENLARGE_SIZE), int(H * ENLARGE_SIZE)), interpolation=cv2.INTER_NEAREST)
 
-# ================== colorize the semantic map and merge with occupancy map ==================
+# === colorize the semantic map and merge with occupancy map ===
 color_semantic_map = apply_color_to_map(semantic_occupancy_map)
 enlarged_occ_map = cv2.resize(
     occ_map, (W * ENLARGE_SIZE, H * ENLARGE_SIZE), interpolation=cv2.INTER_NEAREST)
@@ -66,7 +66,7 @@ fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(20, 15))
 ax.imshow(color_semantic_map)
 waypoints_coords = np.zeros((2, 0), dtype=np.int16)
 
-# ================================ compute the skeleton ==========================
+# === compute the skeleton ===
 skeleton = skeletonize(enlarged_occ_map)
 graph = sknw.build_sknw(skeleton)
 graph = prune_skeleton_graph(graph)
@@ -86,7 +86,7 @@ ps = np.array([nodes[i]['o'] for i in nodes]).transpose()
 node_coords = np.concatenate((ps, edges_nodes), axis=1)[
     [1, 0], :].astype(np.int32)
 
-# ======================== remove red nodes that are close to themselves =============
+# === remove red nodes that are close to themselves ===
 mask = np.ones(node_coords.shape[1], dtype=bool)
 for i in range(node_coords.shape[1]):
     current_node_coords = node_coords[:, i:i + 1]
@@ -113,7 +113,7 @@ all_node_coords = np.zeros((2, len(nodes_set)), dtype=np.int32)
 for i, node in enumerate(nodes_set):
     all_node_coords[:, i] = node
 
-# ============================ build edges ===============================
+# === build edges ===
 # traverse every pair of nodes, if there are no obstacle between them, add an edge
 edges = []
 
@@ -129,7 +129,7 @@ for i in range(all_node_coords.shape[1]):
             edges.append([i, j])
             edges.append([j, i])
 
-# =================== go through each node, check if edge have close angle ================
+# === go through each node, check if edge have close angle ===
 for i in range(all_node_coords.shape[1]):
     unwanted_edges = []
     current_node_is_source_edges = []
@@ -201,7 +201,7 @@ for i in range(all_node_coords.shape[1]):
                 edges.append([i, node_idx])
                 break
 
-# ===================== build a connected component, remove the dangling nodes ====================
+# === build a connected component, remove the dangling nodes ===
 G = nx.Graph()
 for edge in edges:
     G.add_edge(edge[0], edge[1])
@@ -221,7 +221,7 @@ for edge in edges:
 
 edges = new_edges
 
-# ================== draw edges ===================
+# === draw edges ===
 x = all_node_coords[0, :].flatten()
 y = all_node_coords[1, :].flatten()
 edges = np.array(edges)
@@ -236,7 +236,7 @@ ax.get_yaxis().set_visible(False)
 fig.tight_layout()
 plt.show()
 
-# ===================================== save the graph
+# === save the graph ===
 all_node_poses = np.zeros((2, all_node_coords.shape[1]), dtype=np.float32)
 for i in range(all_node_coords.shape[1]):
     node_coords = all_node_coords[:, i]

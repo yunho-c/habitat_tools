@@ -21,23 +21,23 @@ def build_sem_map(env, saved_folder, height):
         pi * 7.0 / 4,
     ]
 
-    # ============================= build a grid =========================================
+    # === build a grid ===
     x = np.arange(-cfg.SEM_MAP.WORLD_SIZE, cfg.SEM_MAP.WORLD_SIZE, 0.3)
     z = np.arange(-cfg.SEM_MAP.WORLD_SIZE, cfg.SEM_MAP.WORLD_SIZE, 0.3)
     xv, zv = np.meshgrid(x, z)
     grid_H, grid_W = zv.shape
 
-    # ============================ get scene ins to cat dict
+    # === get scene ins to cat dict ===
     scene = env.semantic_annotations()
     ins2cat_dict = {
         int(obj.id.split("_")[-1]): obj.category.index() for obj in scene.objects
     }
 
-    # ================================ Building a map ===============================
+    # === build a map ===
     SemMap = SemanticMap(saved_folder)
 
     count_ = 0
-    # ========================= generate observations ===========================
+    # === generate observations ===
     for grid_z in range(grid_H):
         for grid_x in range(grid_W):
             x = xv[grid_z, grid_x]
@@ -49,7 +49,7 @@ def build_sem_map(env, saved_folder, height):
             # print(f'after teleportation, flag_nav = {flag_nav}')
 
             if flag_nav:
-                # ==================== traverse theta ======================
+                # === traverse theta ===
                 for idx_theta, theta in enumerate(theta_lst):
                     agent_rot = habitat_sim.utils.common.quat_from_angle_axis(
                         theta, habitat_sim.geo.GRAVITY
@@ -63,7 +63,7 @@ def build_sem_map(env, saved_folder, height):
                     sseg_img = convertInsSegToSSeg(InsSeg_img, ins2cat_dict)
                     # print(f'rgb_img.shape = {rgb_img.shape}')
 
-                    # =============================== get agent global pose on habitat env ========================#
+                    # === get agent global pose on habitat env ===
                     agent_pos = env.get_agent_state().position
                     agent_rot = env.get_agent_state().rotation
                     heading_vector = quaternion_rotate_vector(
